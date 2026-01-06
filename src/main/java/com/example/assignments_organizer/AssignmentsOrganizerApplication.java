@@ -31,7 +31,9 @@ import java.util.List;
 public class AssignmentsOrganizerApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(AssignmentsOrganizerApplication.class, args);
+
     }
 
 }
