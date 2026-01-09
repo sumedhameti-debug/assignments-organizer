@@ -1,6 +1,5 @@
 package com.example.assignments_organizer;
 
-import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
@@ -21,10 +20,10 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-
-import com.example.assignments_organizer.block.*;
 
 @SpringBootApplication
 public class AssignmentsOrganizerApplication {
@@ -45,6 +44,8 @@ public class AssignmentsOrganizerApplication {
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     private static final String TOKENS_DIRECTORY_PATH = System.getProperty("user.home") + "/.assignments_organizer/tokens";
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
+
+
 
     public static Credential getCredentials() {
 
@@ -104,26 +105,14 @@ public class AssignmentsOrganizerApplication {
         CalendarListEntry assignmentsCalendar = getAssignmentsCalendar(calendar);
 
         // Retrieve the events list for the next week
-        List<Event> eventList = retrieveEvents(calendar, assignmentsCalendar);
+        ArrayOfEventsListsBuilder arrayOfEventListsBuilder = new ArrayOfEventsListsBuilder(calendar, assignmentsCalendar);
+        LinkedList<Event>[] arrayOfEventLists = arrayOfEventListsBuilder.retrieveEvents(7);
+
+        System.out.println(Arrays.toString(arrayOfEventLists));
 
     }
 
-    public static List<Event> retrieveEvents(Calendar calendar, CalendarListEntry assignmentsCalendar) {
 
-        try {
-            return calendar.events().list(assignmentsCalendar.getId())
-                    .setTimeMin(new DateTime(System.currentTimeMillis()))
-                    .setTimeMax(new DateTime(System.currentTimeMillis() + 7L * 24*60*60*1000)) // next 7 days
-                    .setOrderBy("startTime")  // sorts events chronologically
-                    .setSingleEvents(true)    // expands recurring events
-                    .execute()
-                    .getItems();
-        } catch (IOException e) {
-            System.out.println("Class: AssignmentsOrganizerApplication\nMethod: retrieveEvents");
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static CalendarListEntry getAssignmentsCalendar(Calendar calendar) {
 
