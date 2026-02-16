@@ -1,7 +1,5 @@
 package com.example.assignments_organizer;
 
-import org.jspecify.annotations.NonNull;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -71,7 +69,7 @@ public class Day {
         return totalTimeLeft;
     }
 
-    private void setTimeLeft(int newTimeLeft, @NonNull Difficulty difficulty) {
+    private void setTimeLeft(int newTimeLeft, Difficulty difficulty) {
         switch (difficulty) {
             case HARD:
                 timeLeftHard = newTimeLeft;
@@ -82,6 +80,8 @@ public class Day {
             case EASY:
                 timeLeftEasy = newTimeLeft;
                 break;
+            default:
+                throw new RuntimeException("Difficulty is null");
         }
     }
 
@@ -91,7 +91,7 @@ public class Day {
         idealTimeEasy = timeLeftEasy;
     }
 
-    public void addToTimeLeft(int increment, @NonNull Difficulty difficulty) {
+    public void addToTimeLeft(int increment, Difficulty difficulty) {
         switch (difficulty) {
             case HARD:
                 timeLeftHard += increment;
@@ -102,6 +102,8 @@ public class Day {
             case EASY:
                 timeLeftEasy += increment;
                 break;
+            default:
+                throw new RuntimeException("Difficulty is null");
         }
     }
 
@@ -114,11 +116,12 @@ public class Day {
         }
     }
 
-    public int getTimeLeft(@NonNull Difficulty difficulty) {
+    public int getTimeLeft(Difficulty difficulty) {
         return switch (difficulty) {
             case HARD -> timeLeftHard;
             case MEDIUM -> timeLeftMedium;
             case EASY -> timeLeftEasy;
+            default -> throw new RuntimeException("Difficulty is null");
         };
     }
 

@@ -1,7 +1,5 @@
 package com.example.assignments_organizer;
 
-import org.jspecify.annotations.NonNull;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -12,7 +10,7 @@ public class Organizer {
     private LinkedList<Assignment> hardAssignments = new LinkedList<>(), mediumAssignments = new LinkedList<>(), easyAssignments = new LinkedList<>();
     private Day[] sortedDaysHard, sortedDaysMedium, sortedDaysEasy, sortedDaysTotal;
 
-    private LinkedList<Assignment> getCorrectAssignmentsByDifficultyList(@NonNull Difficulty difficulty) {
+    private LinkedList<Assignment> getCorrectAssignmentsByDifficultyList(Difficulty difficulty) {
         return switch (difficulty) {
             case HARD -> hardAssignments;
             case MEDIUM -> mediumAssignments;

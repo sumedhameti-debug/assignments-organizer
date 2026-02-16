@@ -1,17 +1,31 @@
 package com.example.assignments_organizer;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
+@Entity
 public class Assignment {
 
-    private int lastDate, duration;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+
+    private int lastDate, duration;
     private String name;
 
-    public Assignment(int lastDate, int duration, Difficulty difficulty, String name) {
+    @JsonCreator
+    public Assignment(@JsonProperty("lastDate") int lastDate, @JsonProperty("duration") int duration, @JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("name") String name) {
         this.lastDate = lastDate;
         this.duration = duration;
         this.difficulty = difficulty;
         this.name = name;
     }
+
+    public Assignment() {}
 
     @Override
     public String toString() {
@@ -43,6 +57,22 @@ public class Assignment {
 
     public void setLastDate(int lastDate) {
         this.lastDate = lastDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Assignment Organizer</title>
+    <style>
+      body {
+          width: 300px;
+          font-family: Arial, sans-serif;
+      }
+
+      .nav {
+	  display: flex;
+	  align-items: center;      /* vertically center items */
+	  justify-content: center;  /* center the whole group */
+	  gap: 20px;                /* space between prev button, counter, next button */
+	  margin: 10px 0;
+      }
+
+      #counter {
+	  white-space: nowrap;  /* keep "1 / 5" on one line */
+	  font-weight: bold;
+      }
+
+      button {
+          width: 100%;
+          margin-top: 5px;
+          padding: 6px;
+      }
+
+      button:disabled {
+	  background-color: #ccc;
+	  color: #666;
+	  cursor: not-allowed;
+      }
+
+      select.placeholder {
+	  color: grey;
+      }
+
+      select {
+	  color: black;
+      }
+      
+      input, select {
+          width: 100%;
+          margin-top: 4px;
+          padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h3>Assignment</h3>
+
+    <input id="title" placeholder="Assingment Name">
+    <input id="duration" type="number" placeholder="Duration (minutes)">
+    <select id="difficulty">
+      <option value="" disabled selected hidden>Select difficulty</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <input id="dueDate" type="number" placeholder="Due (days from now)">
+
+    <div class="nav">
+      <button id="prevBtn"><</button>
+			     <span id="counter"></span>
+			     <button id="nextBtn">></button>
+    </div>
+
+    <button id="updateBtn" disabled>Save Update</button>
+    <button id="deleteBtn">Remove Assignment</button>
+
+    <button id="runSchedulerBtn">Run Scheduler</button>
+
+    <p id="status"></p>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
