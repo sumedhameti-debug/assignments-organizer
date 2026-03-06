@@ -1,9 +1,11 @@
 package com.example.assignments_organizer;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * This class information about assignments to be done that day, as well as information used to determine which assignments should be done that day
+ */
 public class Day {
 
     private int totalTimeLeft, timeLeftHard, timeLeftMedium, timeLeftEasy;
@@ -26,11 +28,6 @@ public class Day {
         timeLeftHard = idealTimeHard - timeLeftHard;
         timeLeftMedium = idealTimeMedium - timeLeftMedium;
         timeLeftEasy = idealTimeEasy - timeLeftEasy;
-    }
-
-    // For testing
-    public void printAssignmentsForTheDay() {
-        for (Assignment assignment : assignmentsForTheDay) System.out.println(assignment);
     }
 
     public LinkedList<Assignment> getAssignmentsForTheDay() {

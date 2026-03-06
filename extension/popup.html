@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Assignment Organizer</title>
+    <title>Assignments Organizer</title>
     <style>
+      hr {
+      height: 1px;
+      background-color: black;
+      margin-top: 12px;
+      }
+
       body {
-          width: 300px;
-          font-family: Arial, sans-serif;
+      width: 300px;
+      font-family: Arial, sans-serif;
       }
 
       .nav {
@@ -22,9 +28,9 @@
       }
 
       button {
-          width: 100%;
-          margin-top: 5px;
-          padding: 6px;
+      width: 100%;
+      margin-top: 5px;
+      padding: 6px;
       }
 
       button:disabled {
@@ -38,29 +44,46 @@
       }
 
       select {
-	  color: black;
+      color: black;
       }
       
       input, select {
-          width: 100%;
-          margin-top: 4px;
-          padding: 5px;
+      width: 100%;
+      margin-top: 4px;
+      padding: 5px;
+      box-sizing: border-box;
+      }
+
+      label {
+      display: block;
+      margin-top: 12px;
       }
     </style>
   </head>
   <body>
 
-    <h3>Assignment</h3>
+    <h1 style="text-align: center;">Assignments Organizer</h1>
 
-    <input id="title" placeholder="Assingment Name">
-    <input id="duration" type="number" placeholder="Duration (minutes)">
+    <hr>
+
+    <h4>Modify Assignments</h4>
+
+    <label for="title">Assignment name</label>
+    <input id="title" placeholder="Enter name">
+
+    <label for="duration">Duration (minutes)</label>
+    <input id="duration" type="number" min="1" placeholder="Enter duration">
+
+    <label for="dueDate">Difficulty</label>
     <select id="difficulty">
       <option value="" disabled selected hidden>Select difficulty</option>
       <option value="EASY">Easy</option>
       <option value="MEDIUM">Medium</option>
       <option value="HARD">Hard</option>
     </select>
-    <input id="dueDate" type="number" placeholder="Due (days from now)">
+
+    <label for="dueDate">Last date to work on assignment</label>
+    <input id="dueDate" type="date">
 
     <div class="nav">
       <button id="prevBtn"><</button>
@@ -71,10 +94,30 @@
     <button id="updateBtn" disabled>Save Update</button>
     <button id="deleteBtn">Remove Assignment</button>
 
-    <button id="runSchedulerBtn">Run Scheduler</button>
+    <hr>
+
+    <h4>Schedule Assignments in Calendar</h4>
+
+    <label for="inputCalendar">Input calendar</label>
+    <select id="inputCalendar">
+      <option value="" disabled selected hidden>Select input calendar</option>
+    </select>
+
+    <label for="outputCalendar">Output calendar</label>
+    <select id="outputCalendar">
+      <option value="" disabled selected hidden>Select output calendar</option>
+    </select>
+
+    <label for="studyDuration">Study duration (minutes)</label>
+    <input id="studyDuration" type="number" min="1" placeholder="Enter study duration">
+
+    <label for="breakDuration">Break duration (minutes)</label>
+    <input id="breakDuration" type="number" min="0" placeholder="Enter break duration">
+
+    <button id="runSchedulerBtn" disabled>Run Scheduler</button>
 
     <p id="status"></p>
 
-    <script src="popup.js"></script>
+    <script type="module" src="popup.js"></script>
   </body>
 </html>

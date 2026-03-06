@@ -4,6 +4,8 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -11,6 +13,9 @@ import java.time.Instant;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * This class is a custom Linked List of Google Calendar events which internally schedules study breaks
+ */
 public class StudyTimesList implements Iterable<Event> {
 
     private Node firstNode;
@@ -116,7 +121,7 @@ public class StudyTimesList implements Iterable<Event> {
 
     public static int computeDifferenceInDuration(EventDateTime dateTimeStart, EventDateTime dateTimeEnd) {
 
-        return (int) (dateTimeEnd.getDateTime().getValue() - dateTimeStart.getDateTime().getValue()) / 60000;
+        return (int) ((dateTimeEnd.getDateTime().getValue() - dateTimeStart.getDateTime().getValue()) / 60000);
 
     }
 
@@ -152,12 +157,19 @@ public class StudyTimesList implements Iterable<Event> {
 
             while (timeLeftAssignment != 0) {
 
-                if (currentNode == null) throw new RuntimeException("Not enough study time");
+                if (currentNode == null) {
+
+                    throw new ResponseStatusException(
+                            HttpStatus.BAD_REQUEST,
+                            "Not enough time to study"
+                    );
+
+                }
 
                 currentEvent = currentNode.getEvent();
                 studyTimeLength = StudyTimesList.computeDifferenceInDuration(currentEvent.getStart(), currentEvent.getEnd());
 
-                if (studyTimeLength < timeLeftAssignment) {
+                if (studyTimeLength > timeLeftAssignment) {
 
                     newNode = new Node(
                             addToDateTime(
@@ -171,16 +183,18 @@ public class StudyTimesList implements Iterable<Event> {
                     currentNode.setNext(newNode);
 
                     timeLeftAssignment = 0;
+                    currentEvent.setSummary(assignment.getName());
+                    currentNode = newNode;
 
                 } else {
 
                     timeLeftAssignment -= studyTimeLength;
+                    currentEvent.setSummary(assignment.getName());
+                    currentNode = currentNode.next;
 
                 }
 
-                currentEvent.setSummary(assignment.getName());
 
-                currentNode = currentNode.next;
 
             }
 
@@ -190,12 +204,25 @@ public class StudyTimesList implements Iterable<Event> {
 
     public void addToCalendar(Calendar calendar, String calendarID) {
 
+        Event newEvent;
+
         for (Event event : this) {
 
             if (event.getSummary() != null) {
 
+                newEvent = event.clone().setEnd(
+                        new EventDateTime()
+                                .setDateTime(
+                                        addToDateTime(
+                                                event.getEnd().getDateTime(),
+                                                Duration.ofMinutes(-1)
+                                        )
+                                )
+                                .setTimeZone(zone)
+                );
+
                 try {
-                    calendar.events().insert(calendarID, event).execute();
+                    calendar.events().insert(calendarID, newEvent).execute();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

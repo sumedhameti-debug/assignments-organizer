@@ -3,7 +3,12 @@ package com.example.assignments_organizer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
+/**
+ * An instance of this class stores information about an assignments
+ */
 @Entity
 public class Assignment {
 
@@ -14,11 +19,19 @@ public class Assignment {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
+    private LocalDateTime lastDateLocalDateTime;
     private int lastDate, duration;
     private String name;
 
     @JsonCreator
-    public Assignment(@JsonProperty("lastDate") int lastDate, @JsonProperty("duration") int duration, @JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("name") String name) {
+    public Assignment(@JsonProperty("lastDateLocalDateTime") LocalDateTime lastDateLocalDateTime, @JsonProperty("duration") int duration, @JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("name") String name) {
+        this.lastDateLocalDateTime = lastDateLocalDateTime;
+        this.duration = duration;
+        this.difficulty = difficulty;
+        this.name = name;
+    }
+
+    public Assignment(int lastDate, @JsonProperty("duration") int duration, @JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("name") String name) {
         this.lastDate = lastDate;
         this.duration = duration;
         this.difficulty = difficulty;
@@ -51,6 +64,10 @@ public class Assignment {
         return lastDate;
     }
 
+    public LocalDateTime getLastDateLocalDateTime() {
+        return lastDateLocalDateTime;
+    }
+
     public int getDuration() {
         return duration;
     }
@@ -77,6 +94,14 @@ public class Assignment {
 
     public String getName() {
         return name;
+    }
+
+    public void setLastDateToDaysFromToday(LocalDateTime today) {
+        lastDate = (int) ChronoUnit.DAYS.between(today, lastDateLocalDateTime) + 1;
+    }
+
+    public void setLastDateLocalDateTime(LocalDateTime lastDateLocalDateTime) {
+        this.lastDateLocalDateTime = lastDateLocalDateTime;
     }
 
 }

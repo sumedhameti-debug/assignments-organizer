@@ -30,6 +30,7 @@ public class AssignmentService {
         existing.setDifficulty(Difficulty.valueOf(updatedAssignment.getDifficulty().toString().toUpperCase()));
         existing.setDuration(updatedAssignment.getDuration());
         existing.setLastDate(updatedAssignment.getLastDate());
+        existing.setLastDateLocalDateTime(updatedAssignment.getLastDateLocalDateTime());
 
         return repository.save(existing);
 

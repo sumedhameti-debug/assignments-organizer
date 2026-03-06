@@ -1,5 +1,8 @@
 package com.example.assignments_organizer;
 
+/**
+ * Stores the duration of assignments for each difficulty that is due no later than a certain day
+ */
 public class DaySummary {
 
     private int hardDuration, mediumDuration, easyDuration;

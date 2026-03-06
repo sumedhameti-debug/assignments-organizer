@@ -5,6 +5,8 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -13,17 +15,22 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * Builds arrays of calendar events and corresponding study-time blocks
+ * across multiple days using Google Calendar data.
+ */
 public class ArrayOfEventsListsBuilder {
 
     private Calendar calendar;
     private CalendarListEntry calendarListEntry;
-    private ZoneId zone; // user timezone
+    private ZoneId zone;
     private LocalDate today;
     private int[] totalStudyTimePerDay;
     private LinkedList<Event>[] events;
     private StudyTimesList[] studyTimesLists;
+    private DateTime currentTime;
 
-    public ArrayOfEventsListsBuilder(Calendar calendar, CalendarListEntry calendarListEntry, int days, long totalTime, Duration studyDuration, Duration breakDuration) {
+    public ArrayOfEventsListsBuilder(Calendar calendar, CalendarListEntry calendarListEntry, int days, long totalTime, Duration studyDuration, Duration breakDuration, DateTime currentTime) {
 
         this.calendar = calendar;
         this.calendarListEntry = calendarListEntry;
@@ -31,6 +38,7 @@ public class ArrayOfEventsListsBuilder {
         this.today = LocalDate.now(this.zone);
         this.totalStudyTimePerDay = new int[days];
         this.studyTimesLists = new StudyTimesList[days];
+        this.currentTime = currentTime;
         this.events = retrieveEvents(days, totalTime, studyDuration, breakDuration);
 
     }
@@ -47,6 +55,10 @@ public class ArrayOfEventsListsBuilder {
         return events;
     }
 
+    /**
+     * Retrieves events for each day and generates study blocks until
+     * the requested total study time is satisfied.
+     */
     private LinkedList<Event>[] retrieveEvents(int days, long totalTime, Duration studyDuration, Duration breakDuration) {
 
         totalTime *= 60000;
@@ -72,22 +84,26 @@ public class ArrayOfEventsListsBuilder {
                 totalTime -= (event.getEnd().getDateTime().getValue() - event.getStart().getDateTime().getValue());
 
                 if (totalTime == 0) {
-                    totalStudyTimePerDay[day] = (int) (totalTimeAtPreviousIteration - totalTime)/60000;
+                    totalStudyTimePerDay[day] = (int) ((totalTimeAtPreviousIteration - totalTime)/60000);
                     return Arrays.copyOfRange(arrayOfEventsLists, 0, day + 1);
                 } else if (totalTime < 0) {
                     studyTimesLists[day].cutListShortAtStudyEvent(event, (int) totalTime/60000);
-                    totalStudyTimePerDay[day] = (int) totalTimeAtPreviousIteration/60000;
+                    totalStudyTimePerDay[day] = (int) (totalTimeAtPreviousIteration/60000);
+                    studyTimesLists[day].testBlockList();
                     return Arrays.copyOfRange(arrayOfEventsLists, 0, day + 1);
                 }
 
             }
 
-            totalStudyTimePerDay[day] = (int) (totalTimeAtPreviousIteration - totalTime)/60000;
+            totalStudyTimePerDay[day] = (int) ((totalTimeAtPreviousIteration - totalTime)/60000);
             totalTimeAtPreviousIteration = totalTime;
 
         }
 
-        throw new RuntimeException("Not enough time to study");
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Not enough time to study"
+        );
 
     }
 
@@ -100,8 +116,8 @@ public class ArrayOfEventsListsBuilder {
             return new LinkedList<>(this.calendar.events().list(this.calendarListEntry.getId())
                     .setTimeMin(startTime)
                     .setTimeMax(endTime)
-                    .setOrderBy("startTime")  // sorts events chronologically
-                    .setSingleEvents(true)    // expands recurring events
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
                     .execute()
                     .getItems());
         } catch (IOException e) {
@@ -114,15 +130,15 @@ public class ArrayOfEventsListsBuilder {
     private LinkedList<Event> retrieveEventsSameDay() {
 
         try {
+
             DateTime startTime = new DateTime(this.today.atStartOfDay(this.zone).toInstant().toEpochMilli());
             DateTime endTime = new DateTime(this.today.plusDays(1).atStartOfDay(this.zone).toInstant().toEpochMilli());
-            DateTime currentTime = new DateTime(System.currentTimeMillis()); // Change this to be centralized everywhere in the program and round up to nearest minute
 
             LinkedList<Event> events = new LinkedList<>(this.calendar.events().list(this.calendarListEntry.getId())
                     .setTimeMin(startTime)
                     .setTimeMax(endTime)
-                    .setOrderBy("startTime")  // sorts events chronologically
-                    .setSingleEvents(true)    // expands recurring events
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
                     .execute()
                     .getItems());
 
@@ -135,9 +151,8 @@ public class ArrayOfEventsListsBuilder {
                 firstEvent.setStart(new EventDateTime().setDateTime(currentTime));
             }
 
-            // TODO If an event has already started
-
             return events;
+
         } catch (IOException e) {
             System.out.println("Class: AssignmentsOrganizerApplication\nMethod: retrieveEvents");
             throw new RuntimeException(e);

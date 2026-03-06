@@ -5,9 +5,12 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This is where time is allocated in each day for different assignments based off duration, difficulty, and deadline
+ */
 public class Organizer {
 
-    private LinkedList<Assignment> hardAssignments = new LinkedList<>(), mediumAssignments = new LinkedList<>(), easyAssignments = new LinkedList<>();
+    private LinkedList<Assignment> hardAssignments, mediumAssignments, easyAssignments;
     private Day[] sortedDaysHard, sortedDaysMedium, sortedDaysEasy, sortedDaysTotal;
 
     private LinkedList<Assignment> getCorrectAssignmentsByDifficultyList(Difficulty difficulty) {
@@ -20,6 +23,10 @@ public class Organizer {
 
     public Day[] organize(int numDays, int[] dayInfo, LinkedList<Assignment> assignments) {
 
+        hardAssignments = new LinkedList<>();
+        mediumAssignments = new LinkedList<>();
+        easyAssignments = new LinkedList<>();
+
         Difficulty[] difficulties = Difficulty.values();
         Day temp;
         int insertIndex, overtimeLength, duration, timeLeft, sumOfTimeLeft, timeForDay;
@@ -28,10 +35,9 @@ public class Organizer {
                 hardTimeLeftComparator = Comparator.comparingInt(x -> x.getTimeLeft(Difficulty.HARD)),
                 mediumTimeLeftComparator = Comparator.comparingInt(x -> x.getTimeLeft(Difficulty.MEDIUM)),
                 easyTimeLeftComparator = Comparator.comparingInt(x -> x.getTimeLeft(Difficulty.EASY)),
-                currentComparator; // Fix code duplication
+                currentComparator;
         Comparator<Assignment> assignmentComparator = Comparator.comparingInt(Assignment::getLastDate).thenComparingInt(Assignment::getDuration);
 
-        // 1b & 1d
         Day[] days = new Day[numDays];
         DaySummary[] daySummaries = new DaySummary[numDays];
         for (int i = 0; i < numDays; i++) {
@@ -49,13 +55,14 @@ public class Organizer {
         Day[] tempSortedDays = Arrays.copyOf(days, days.length);
         int length, totalTimeLeft, average;
 
+        /**
+         * Decide the ideal distribution of time for assignments of each difficulty without considering deadlines
+         */
         for (Difficulty difficulty : difficulties) {
 
-            // 1e
             tempAssignments = getCorrectAssignmentsByDifficultyList(difficulty);
             tempAssignments.sort(assignmentComparator);
 
-            // Step 2
             length = 0;
             tempSortedDays = Arrays.copyOf(days, numDays);
             Arrays.sort(tempSortedDays, totalTimeLeftComparator);
@@ -69,7 +76,6 @@ public class Organizer {
                 length -= timeForDay;
             }
 
-            // 1c
             currentComparator = switch (difficulty) {
                 case HARD -> hardTimeLeftComparator;
                 case MEDIUM -> mediumTimeLeftComparator;
@@ -94,14 +100,16 @@ public class Organizer {
 
         for (Day day : days) day.setIdealTimeToTimeLeft();
 
-        // Step 3
-
+        /**
+         * Outermost loop: loop over days
+         */
         int maxKValue;
         sortedDaysTotal = Arrays.copyOf(days, days.length);
         for (int i = 0; i < daySummaries.length; i++) {
 
-            // a
-
+            /**
+             * Attempt to schedule assignments according to the ideal distribution of assignments by difficulty
+             */
             for (Difficulty difficulty : difficulties) {
 
                 for (int j = i; j >= 0; j--) {
@@ -135,11 +143,11 @@ public class Organizer {
 
             }
 
-            // b
-
-
             for (Difficulty difficulty : difficulties) {
 
+                /**
+                 * Sort by how much time is left
+                 */
                 switch (difficulty) {
                     case HARD:
                         tempSortedDays = sortedDaysHard;
@@ -158,6 +166,9 @@ public class Organizer {
 
                 Arrays.sort(tempSortedDays, 0, i + 1, currentComparator);
 
+                /**
+                 * Distribute extra hours
+                 */
                 for (int j = i; j > 0 && daySummaries[i].getDuration(difficulty) != 0; j--) {
 
                     duration = daySummaries[i].getDuration(difficulty);
@@ -191,14 +202,14 @@ public class Organizer {
 
                     }
 
-
                 }
+
 
                 Arrays.sort(sortedDaysTotal, 0, i + 1, totalTimeLeftComparator);
 
                 if (daySummaries[i].getDuration(difficulty) != 0) {
                     for (int j = i; j >= 0; j--) {
-                        sortedDaysTotal[j].addToTimeLeft(
+                        sortedDaysTotal[j].subtractFromTimeLeft(
                                 Math.min(daySummaries[i].getDuration(difficulty) / (j + 1), sortedDaysTotal[j].getTotalTimeLeft()),
                                 difficulty
                         );
@@ -209,44 +220,12 @@ public class Organizer {
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        for (Difficulty difficulty : difficulties) for (Assignment assignment : getCorrectAssignmentsByDifficultyList(difficulty)) System.out.println(assignment);
-
+        /**
+         * Distribute the assignments
+         */
         for (Day day : days) {
 
-            System.out.println(day.getTimeLeft(Difficulty.HARD));
-
             day.resetTimeLeft();
-
-            System.out.println(day.getTimeLeft(Difficulty.HARD));
 
             day.addAssignments(hardAssignments, Difficulty.HARD);
             day.addAssignments(mediumAssignments, Difficulty.MEDIUM);
@@ -256,22 +235,6 @@ public class Organizer {
 
         return days;
 
-    }
-
-    private void increaseSortedArraySectionSize(Comparator<Day> currentComparator, Day[] tempSortedDays, int i) {
-        int insertIndex;
-        Day temp;
-        insertIndex = Arrays.binarySearch(
-                tempSortedDays,
-                0,
-                i + 1,
-                tempSortedDays[i],
-                currentComparator
-        );
-        if (insertIndex < 0) insertIndex = -insertIndex - 1;
-        temp = tempSortedDays[i];
-        System.arraycopy(tempSortedDays, insertIndex, tempSortedDays, insertIndex + 1, i - insertIndex);
-        tempSortedDays[insertIndex] = temp;
     }
 
 }
