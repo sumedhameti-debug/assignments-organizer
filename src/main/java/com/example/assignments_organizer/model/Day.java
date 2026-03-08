@@ -1,10 +1,13 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.model;
+
+import com.example.assignments_organizer.enums.Difficulty;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * This class information about assignments to be done that day, as well as information used to determine which assignments should be done that day
+ * This class stores information about assignments to be done that day, as well as information used
+ * to help the organizer class
  */
 public class Day {
 

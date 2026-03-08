@@ -1,5 +1,6 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.repository;
 
+import com.example.assignments_organizer.model.Assignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

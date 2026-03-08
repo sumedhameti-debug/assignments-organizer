@@ -1,4 +1,4 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.service;
 
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.Credential;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Builds authenticated Google Calendar clients and provides calendar lookup utilities.
+ * Builds authenticated Google Calendar clients and provides calendar lookup utilities
  */
 @Component
 public class GoogleConnection {

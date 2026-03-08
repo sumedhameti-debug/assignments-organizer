@@ -1,9 +1,13 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.service;
+
+import com.example.assignments_organizer.model.Assignment;
+import com.example.assignments_organizer.model.Day;
+import com.example.assignments_organizer.model.DaySummary;
+import com.example.assignments_organizer.enums.Difficulty;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This is where time is allocated in each day for different assignments based off duration, difficulty, and deadline
@@ -55,9 +59,7 @@ public class Organizer {
         Day[] tempSortedDays = Arrays.copyOf(days, days.length);
         int length, totalTimeLeft, average;
 
-        /**
-         * Decide the ideal distribution of time for assignments of each difficulty without considering deadlines
-         */
+        // Decide the ideal distribution of time for assignments of each difficulty without considering deadlines
         for (Difficulty difficulty : difficulties) {
 
             tempAssignments = getCorrectAssignmentsByDifficultyList(difficulty);
@@ -100,16 +102,12 @@ public class Organizer {
 
         for (Day day : days) day.setIdealTimeToTimeLeft();
 
-        /**
-         * Outermost loop: loop over days
-         */
+        // Outermost loop: loop over days
         int maxKValue;
         sortedDaysTotal = Arrays.copyOf(days, days.length);
         for (int i = 0; i < daySummaries.length; i++) {
 
-            /**
-             * Attempt to schedule assignments according to the ideal distribution of assignments by difficulty
-             */
+            // Attempt to schedule assignments according to the ideal distribution of assignments by difficulty
             for (Difficulty difficulty : difficulties) {
 
                 for (int j = i; j >= 0; j--) {
@@ -145,9 +143,7 @@ public class Organizer {
 
             for (Difficulty difficulty : difficulties) {
 
-                /**
-                 * Sort by how much time is left
-                 */
+                // Sort by how much time is left
                 switch (difficulty) {
                     case HARD:
                         tempSortedDays = sortedDaysHard;
@@ -166,9 +162,7 @@ public class Organizer {
 
                 Arrays.sort(tempSortedDays, 0, i + 1, currentComparator);
 
-                /**
-                 * Distribute extra hours
-                 */
+                // Distribute extra hours
                 for (int j = i; j > 0 && daySummaries[i].getDuration(difficulty) != 0; j--) {
 
                     duration = daySummaries[i].getDuration(difficulty);
@@ -220,9 +214,7 @@ public class Organizer {
 
         }
 
-        /**
-         * Distribute the assignments
-         */
+        // Distribute the assignments
         for (Day day : days) {
 
             day.resetTimeLeft();

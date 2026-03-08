@@ -1,4 +1,4 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.enums;
 
 /**
  * This enum represents difficulty level

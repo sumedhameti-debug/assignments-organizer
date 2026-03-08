@@ -1,9 +1,15 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.service;
 
+import com.example.assignments_organizer.model.Assignment;
+import com.example.assignments_organizer.repository.AssignmentRepository;
+import com.example.assignments_organizer.enums.Difficulty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Handles database interactions
+ */
 @Service
 public class AssignmentService {
 

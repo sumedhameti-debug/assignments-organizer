@@ -1,5 +1,11 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.service;
 
+import com.example.assignments_organizer.model.Assignment;
+import com.example.assignments_organizer.model.Day;
+import com.example.assignments_organizer.model.ScheduleRequest;
+import com.example.assignments_organizer.repository.AssignmentRepository;
+import com.example.assignments_organizer.util.ArrayOfEventsListsBuilder;
+import com.example.assignments_organizer.util.StudyTimesList;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarListEntry;

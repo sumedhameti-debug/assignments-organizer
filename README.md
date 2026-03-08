@@ -16,9 +16,9 @@ Chrome Extension (Popup UI)
 →
 Spring Boot REST API
 →
-Scheduling Engine (Greedy Algorithm)
-→
 MySQL Database
+→
+Scheduling Engine (Greedy Algorithm)
 →
 Google Calendar API
 

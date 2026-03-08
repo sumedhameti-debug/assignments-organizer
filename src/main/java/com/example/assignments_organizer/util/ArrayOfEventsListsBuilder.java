@@ -1,4 +1,4 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.util;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -30,7 +30,8 @@ public class ArrayOfEventsListsBuilder {
     private StudyTimesList[] studyTimesLists;
     private DateTime currentTime;
 
-    public ArrayOfEventsListsBuilder(Calendar calendar, CalendarListEntry calendarListEntry, int days, long totalTime, Duration studyDuration, Duration breakDuration, DateTime currentTime) {
+    public ArrayOfEventsListsBuilder(Calendar calendar, CalendarListEntry calendarListEntry, int days, long totalTime,
+                                     Duration studyDuration, Duration breakDuration, DateTime currentTime) {
 
         this.calendar = calendar;
         this.calendarListEntry = calendarListEntry;
@@ -107,6 +108,9 @@ public class ArrayOfEventsListsBuilder {
 
     }
 
+    /**
+     * Logic for event retrival on days which are not the current day
+     */
     private LinkedList<Event> retrieveEventsLaterDay(long dayNumber) {
 
         try {
@@ -127,6 +131,9 @@ public class ArrayOfEventsListsBuilder {
 
     }
 
+    /**
+     * Logic for event retrival on the current day
+     */
     private LinkedList<Event> retrieveEventsSameDay() {
 
         try {

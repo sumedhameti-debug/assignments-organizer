@@ -1,5 +1,6 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.model;
 
+import com.example.assignments_organizer.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 /**
- * An instance of this class stores information about an assignments
+ * An instance of this class stores information about an assignment
  */
 @Entity
 public class Assignment {

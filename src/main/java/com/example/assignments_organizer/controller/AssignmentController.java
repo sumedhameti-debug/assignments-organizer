@@ -1,5 +1,9 @@
-package com.example.assignments_organizer;
+package com.example.assignments_organizer.controller;
 
+import com.example.assignments_organizer.model.Assignment;
+import com.example.assignments_organizer.service.AssignmentService;
+import com.example.assignments_organizer.model.ScheduleRequest;
+import com.example.assignments_organizer.service.SchedulerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Handles interactions with the popup and database
+ * Handles interactions with the popup
  */
 @RestController
 public class AssignmentController {
