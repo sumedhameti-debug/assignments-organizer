@@ -12,114 +12,100 @@ Assignments Organizer allows students to:
 
 ## System Architecture
 
-Chrome Extension (Popup UI)
-→
-Spring Boot REST API
-→
-MySQL Database
-→
-Scheduling Engine (Greedy Algorithm)
-→
-Google Calendar API
+### Frontend
+- **Chrome Extension (Popup UI)**
+    - Allows users to create and manage assignments
+    - Retrieves available calendars
+    - Sends scheduling requests to the backend
 
-- Frontend: Chrome Extension (Manifest v3, JavaScript).
-- Backend: Java + Spring Boot.
-- Database: MySQL.
-- External Integration: Google Calendar API (OAuth2).
+### Backend
+- **Spring Boot REST API**
+    - Exposes endpoints for assignment management and scheduling
+    - Runs the scheduling algorithm
+    - Communicates with external services
+- **Scheduling Engine**
+    - Implements a greedy scheduling algorithm
+    - Distributes assignment workload across available days
+    - Ensures deadlines are met while balancing daily workload
+
+### Storage
+- **MySQL Database**
+    - Stores assignments and related data
+
+### External Services
+- **Google Calendar API**
+    - Creates study session events in the user's calendar
+
+## Tech Stack
+
+- **Frontend:** Chrome Extension (Manifest v3, JavaScript).
+- **Backend:** Java + Spring Boot.
+- **Database:** MySQL.
+- **External Integration:** Google Calendar API (OAuth2).
 
 ## Scheduling Algorithm
 
-
 The scheduler models assignment planning as a constrained load-balancing problem.
 
-Objectives:
+### Objectives
 - Ensure completion before deadlines.
 - Balance workload across difficulty levels.
 - Avoid overloading individual days.
 
-The algorithm:
+### Algorithm
 1) Groups assignments by difficulty.
 2) Sorts them by deadline.
 3) Distributes ideal workload across days.
 4) Redistributes excess load backward from deadlines.
 5) Rebalances difficulty allocation to smooth daily workload.
-6) This approach uses a greedy heuristic with local redistribution.
 
-Worst-case runtime is cubic in the number of assignments due to repeated conflict checks and redistribution loops. <!-- However, performance remains sub-second under realistic student workloads. -->
+This approach uses a greedy heuristic with local redistribution.
+Worst-case runtime is cubic in the number of assignments due to repeated conflict checks and redistribution loops. 
 
-<!--
-## Testing
+## Running the Project
 
-Unit tests cover:
-- Scheduling logic correctness
-- Conflict detection
-- Edge cases (same deadline, insufficient time, empty input)
-- Priority ordering
+### Clone the Repository
+```bash
+git clone https://github.com/<your-username>/assignments-organizer.git
+cd assignments-organizer
+```
 
-Run tests:
-mvn test
+### Start the Backend Server
 
-## Setup Instructions
-1️⃣ Backend Setup
-Requirements
+Navigate to the backend directory and start the Spring Boot application.
 
-Java 17+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
 
-MySQL
+The backend will run at:
 
-Maven
-
-Configure Database
-
-Create database:
-
-CREATE DATABASE assignments_db;
-
-Update application.properties:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/assignments_db
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
-
-Run backend:
-
-mvn spring-boot:run
-
-Backend runs on:
-
+```bash
 http://localhost:8080
-2️⃣ Google Calendar API Setup
+```
 
-Create project in Google Cloud Console
+### Load the Chrome Extension
 
-Enable Google Calendar API
+1. Open Chrome and go to 
 
-Configure OAuth credentials
-
-Add redirect URI
-
-Insert client ID into backend config
-
-3️⃣ Load Chrome Extension
-
-Open Chrome
-
-Navigate to:
-
+```bash
 chrome://extensions
+```
 
-Enable Developer Mode
+2. Enable Developer Mode (top right)
 
-Click Load unpacked
+3. Click Load Unpacked
 
-Select the extension directory
+4. Select the extension/ folder from the repository
 
-# Performance
 
-Tested with 100+ assignments:
+### Use the Extension
 
-Scheduling completes under 200ms
-
-No observable degradation at typical student workloads
-
--->
+1. Navigate to Google Calendar 
+2. Make events in a calendar (input calendar) to represent time available for studying 
+3. Create a new calendar (output calendar) where events can be scheduled 
+4. Click the extension icon in Chrome Authenticate with your Google account when prompted 
+5. Add assignments in the popup interface (scroll to the end to add new assignments)
+6. Select input and output calendars along with the necessary study and break duration
+7. Click Run Scheduler to generate study sessions in the output calendar

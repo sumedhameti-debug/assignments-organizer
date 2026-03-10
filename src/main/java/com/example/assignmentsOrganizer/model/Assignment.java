@@ -1,6 +1,6 @@
-package com.example.assignments_organizer.model;
+package com.example.assignmentsOrganizer.model;
 
-import com.example.assignments_organizer.enums.Difficulty;
+import com.example.assignmentsOrganizer.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

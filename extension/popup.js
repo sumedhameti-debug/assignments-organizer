@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     loadAssignments();
 
+    /*
+     * Navigation buttons
+     */
     document.getElementById('prevBtn').addEventListener('click', () => {
         clearStatus();
         prevAssignment();
@@ -17,6 +20,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             clearStatus();
             nextAssignment();
     });
+
+    /*
+     * CRUD operations
+     */
     document.getElementById('updateBtn').addEventListener('click', () => {
             clearStatus();
             saveAssignment();
@@ -26,11 +33,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             deleteAssignment()
     });
 
+    /*
+     * Assignment fields validation
+     */
     document.getElementById('title').addEventListener('input', validateFields);
     document.getElementById('duration').addEventListener('input', validateFields);
     document.getElementById('difficulty').addEventListener('change', validateFields);
     document.getElementById('dueDate').addEventListener('input', validateFields);
 
+    /*
+     * Scheduler fields validation
+     */
     document.getElementById("studyDuration").addEventListener("input", validateSchedulerFields);
     document.getElementById("breakDuration").addEventListener("input", validateSchedulerFields);
     document.getElementById("inputCalendar").addEventListener("change", validateSchedulerFields);
@@ -229,6 +242,9 @@ function deleteAssignment() {
     }).then(() => loadAssignments());
 }
 
+/*
+ * Enables the runBtn only when all necessary fields are filled
+ */
 function validateSchedulerFields() {
 
     const study = document.getElementById("studyDuration").value.trim();
@@ -245,6 +261,9 @@ function validateSchedulerFields() {
     runBtn.disabled = !(studyValid && breakValid && calendarsValid);
 }
 
+/*
+ * Enables the updateBtn only when a change was made
+ */
 function validateFields() {
 
     const difficultySelect = document.getElementById('difficulty');

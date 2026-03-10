@@ -1,4 +1,4 @@
-package com.example.assignments_organizer.model;
+package com.example.assignmentsOrganizer.model;
 
 /**
  * Objects of this class contain data that the frontend sends to the backend during a schedule request

@@ -1,4 +1,4 @@
-package com.example.assignments_organizer.service;
+package com.example.assignmentsOrganizer.service;
 
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.Credential;

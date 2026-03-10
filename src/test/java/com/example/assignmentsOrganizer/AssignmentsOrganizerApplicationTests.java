@@ -1,4 +1,4 @@
-package com.example.assignments_organizer;
+package com.example.assignmentsOrganizer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.example.assignments_organizer;
+package com.example.assignmentsOrganizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

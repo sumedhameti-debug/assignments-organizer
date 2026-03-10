@@ -1,6 +1,6 @@
-package com.example.assignments_organizer.model;
+package com.example.assignmentsOrganizer.model;
 
-import com.example.assignments_organizer.enums.Difficulty;
+import com.example.assignmentsOrganizer.enums.Difficulty;
 
 import java.util.Iterator;
 import java.util.LinkedList;

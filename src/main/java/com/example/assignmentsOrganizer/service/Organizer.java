@@ -1,9 +1,9 @@
-package com.example.assignments_organizer.service;
+package com.example.assignmentsOrganizer.service;
 
-import com.example.assignments_organizer.model.Assignment;
-import com.example.assignments_organizer.model.Day;
-import com.example.assignments_organizer.model.DaySummary;
-import com.example.assignments_organizer.enums.Difficulty;
+import com.example.assignmentsOrganizer.model.Assignment;
+import com.example.assignmentsOrganizer.model.Day;
+import com.example.assignmentsOrganizer.model.DaySummary;
+import com.example.assignmentsOrganizer.enums.Difficulty;
 
 import java.util.Arrays;
 import java.util.Comparator;

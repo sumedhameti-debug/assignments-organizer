@@ -1,8 +1,8 @@
-package com.example.assignments_organizer.service;
+package com.example.assignmentsOrganizer.service;
 
-import com.example.assignments_organizer.model.Assignment;
-import com.example.assignments_organizer.repository.AssignmentRepository;
-import com.example.assignments_organizer.enums.Difficulty;
+import com.example.assignmentsOrganizer.model.Assignment;
+import com.example.assignmentsOrganizer.repository.AssignmentRepository;
+import com.example.assignmentsOrganizer.enums.Difficulty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

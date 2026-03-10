@@ -1,9 +1,9 @@
-package com.example.assignments_organizer.controller;
+package com.example.assignmentsOrganizer.controller;
 
-import com.example.assignments_organizer.model.Assignment;
-import com.example.assignments_organizer.service.AssignmentService;
-import com.example.assignments_organizer.model.ScheduleRequest;
-import com.example.assignments_organizer.service.SchedulerService;
+import com.example.assignmentsOrganizer.model.Assignment;
+import com.example.assignmentsOrganizer.service.AssignmentService;
+import com.example.assignmentsOrganizer.model.ScheduleRequest;
+import com.example.assignmentsOrganizer.service.SchedulerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

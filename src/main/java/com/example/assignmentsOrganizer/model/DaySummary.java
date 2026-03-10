@@ -1,6 +1,6 @@
-package com.example.assignments_organizer.model;
+package com.example.assignmentsOrganizer.model;
 
-import com.example.assignments_organizer.enums.Difficulty;
+import com.example.assignmentsOrganizer.enums.Difficulty;
 
 /**
  * Stores the duration of assignments for each difficulty that is due no later than a certain day

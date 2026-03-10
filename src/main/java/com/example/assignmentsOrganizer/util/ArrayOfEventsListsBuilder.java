@@ -1,4 +1,4 @@
-package com.example.assignments_organizer.util;
+package com.example.assignmentsOrganizer.util;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -90,7 +90,6 @@ public class ArrayOfEventsListsBuilder {
                 } else if (totalTime < 0) {
                     studyTimesLists[day].cutListShortAtStudyEvent(event, (int) totalTime/60000);
                     totalStudyTimePerDay[day] = (int) (totalTimeAtPreviousIteration/60000);
-                    studyTimesLists[day].testBlockList();
                     return Arrays.copyOfRange(arrayOfEventsLists, 0, day + 1);
                 }
 

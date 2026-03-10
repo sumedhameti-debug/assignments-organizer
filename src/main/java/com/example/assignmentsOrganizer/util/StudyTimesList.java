@@ -1,7 +1,7 @@
-package com.example.assignments_organizer.util;
+package com.example.assignmentsOrganizer.util;
 
-import com.example.assignments_organizer.model.Assignment;
-import com.example.assignments_organizer.model.Day;
+import com.example.assignmentsOrganizer.model.Assignment;
+import com.example.assignmentsOrganizer.model.Day;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -25,6 +25,9 @@ public class StudyTimesList implements Iterable<Event> {
     private final Duration studyDuration, breakDuration;
     private int totalDuration;
 
+    /**
+     * This constructor makes the custom Linked List with breaks added
+     */
     public StudyTimesList(LinkedList<Event> eventList, String zone, Duration studyDuration, Duration breakDuration) {
 
         this.zone = zone;
@@ -69,18 +72,6 @@ public class StudyTimesList implements Iterable<Event> {
                 }
 
             }
-
-        }
-
-    }
-
-    public void testBlockList() {
-
-        for (Event currentEvent : this) {
-
-            System.out.print(currentEvent.getStart().getDateTime());
-            System.out.print(" to ");
-            System.out.println(currentEvent.getEnd().getDateTime());
 
         }
 
@@ -146,6 +137,9 @@ public class StudyTimesList implements Iterable<Event> {
 
     }
 
+    /**
+     * Adds assignments to the study events
+     */
     public void schedule(Day day) {
 
         int timeLeftAssignment;
@@ -204,6 +198,9 @@ public class StudyTimesList implements Iterable<Event> {
 
     }
 
+    /**
+     * Adds the study events to Google Calendar
+     */
     public void addToCalendar(Calendar calendar, String calendarID) {
 
         Event newEvent;
@@ -318,7 +315,7 @@ public class StudyTimesList implements Iterable<Event> {
         }
 
         @Override
-        public void remove () {
+        public void remove() {
 
             throw new UnsupportedOperationException("Remove not supported");
 

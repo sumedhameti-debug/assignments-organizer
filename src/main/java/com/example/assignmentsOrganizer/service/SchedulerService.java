@@ -1,11 +1,11 @@
-package com.example.assignments_organizer.service;
+package com.example.assignmentsOrganizer.service;
 
-import com.example.assignments_organizer.model.Assignment;
-import com.example.assignments_organizer.model.Day;
-import com.example.assignments_organizer.model.ScheduleRequest;
-import com.example.assignments_organizer.repository.AssignmentRepository;
-import com.example.assignments_organizer.util.ArrayOfEventsListsBuilder;
-import com.example.assignments_organizer.util.StudyTimesList;
+import com.example.assignmentsOrganizer.model.Assignment;
+import com.example.assignmentsOrganizer.model.Day;
+import com.example.assignmentsOrganizer.model.ScheduleRequest;
+import com.example.assignmentsOrganizer.repository.AssignmentRepository;
+import com.example.assignmentsOrganizer.util.ArrayOfEventsListsBuilder;
+import com.example.assignmentsOrganizer.util.StudyTimesList;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarListEntry;
